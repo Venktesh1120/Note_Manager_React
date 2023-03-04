@@ -1,14 +1,36 @@
+import { useState } from "react";
+import { Trash } from "react-bootstrap-icons";
 import s from "./style.module.css";
 
-export function TextCard(props) {
+export function TextCard({ title, content, subtitle, onClick, onClickTrash }) {
+  const [isCardHovered, setIsCardHovered] = useState(false);
+  const [isTrashHovered, setIsTrashHovered] = useState(false);
+
+  function onClickTrash_(e) {
+    onClickTrash();
+    e.stopPropagation();
+  }
   return (
-    <div className="card">
+    <div
+      onClick={onClick}
+      className={`card ${s.container}`}
+      style={{ borderColor: isCardHovered ? "#0d6efd" : "transparent" }}
+      onMouseEnter={() => setIsCardHovered(true)}
+      onMouseLeave={() => setIsCardHovered(false)}
+    >
       <div className="card-body">
-        <h5 className="card-title">Card Title</h5>
-        <h6 className="card-subtitle md-2 text-muted">Card Subtitle</h6>
-        <p className="card-text">
-          qwertyuisdcfghjhbvcxdcfghbgfdsdfvgbhgvfcdscfvgb
-        </p>
+        <div className={s.title_row}>
+          <h5 className="card-title">{title}</h5>
+          <Trash
+            size={20}
+            onMouseEnter={() => setIsTrashHovered(true)}
+            onMouseLeave={() => setIsTrashHovered(false)}
+            style={{ color: isTrashHovered ? "#FF7373" : "#b8b8b8" }}
+            onClick={onClickTrash_}
+          />
+        </div>
+        <h6 className={`card-subtitle mb-2 text-muted`}>{subtitle}</h6>
+        <p className={`card-text ${s.text_content}`}>{content}</p>
       </div>
     </div>
   );
